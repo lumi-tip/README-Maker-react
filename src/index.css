@@ -1,0 +1,74 @@
+.container{
+  height: 100vh !important;
+  padding: 10px;
+}
+
+body{
+  font-family: Karla, sans-serif;
+}
+
+.gutter {
+  background-color: #eee;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+}
+
+.gutter.gutter-horizontal:hover {
+  cursor: col-resize;
+}
+
+.sidebar {
+  width: 20%;
+  height:100vh
+}
+
+.editor{
+  width: 80%;
+  height: 100vh;
+}
+
+.split{
+  height: 100% !important;
+  display: flex;
+}
+
+.add-btn{
+  border: none;
+  color:white;
+  background-color: rgb(33, 46, 122);
+  height: 30px;
+  width: 30px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.add-btn-wrapper{
+  height: 50px;
+}
+
+.note{
+  overflow: hidden;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.selected-note{
+  background-color: rgb(33, 46, 122);
+  color:white
+}
+
+.text-snippet {
+  font-weight: 400;
+  line-height: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
