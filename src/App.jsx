@@ -1,23 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Split from 'react-split'
 import Sidebar from "./Sidebar";
 import { nanoid } from 'nanoid';
 import Editor from "./Editor.jsx";
+import { onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { notesCollection, db } from "../firebase.js";
 
 
 export default function App() {
   const [notesArr, setNotesArr] = useState([])
-  const [currentID, setCurrentID] = useState(notesArr[0]?.id) || []
+  const [currentID, setCurrentID] = useState(notesArr[0]?.id || "")
 
-  const addNote = ()=>{
+  useEffect(() => {
+    const unsubscribe = onSnapshot(notesCollection, function(snapshot) {
+        const notesArray = snapshot.docs.map(doc => ({
+            ...doc.data(),
+            id: doc.id
+        }))
+        setNotesArr(notesArray)
+        setCurrentID(notesArray[0]?.id || "")
+        console.log(currentID)
+    })
+    return unsubscribe
+}, [])
+
+  const addNote = async ()=>{
     const newNote = {
-      id: nanoid(),
       body: "#Add Your Text Here"
     }
 
-    setNotesArr(prevArr => [newNote, ...prevArr])
-    setCurrentID(newNote.id)
+    const ref = addDoc(notesCollection, newNote)
+    setNotesArr(prevArr => [{...newNote, id:ref.id}, ...prevArr])
+    setCurrentID(ref.id)
+    console.log(notesArr)
   }
 
   const setCurrentNoteId = (id) =>{
@@ -39,11 +55,13 @@ export default function App() {
     return note
   }
 
-  const deleteNote = (event, id) => {
-    event.stopPropagation()
-    let filteredNotes = notesArr.filter(note=> note.id !== id)
-    setCurrentID(filteredNotes[0]?.id || [])
-    setNotesArr(filteredNotes) 
+  const deleteNote = async (id) => {
+    // event.stopPropagation()
+    // let filteredNotes = notesArr.filter(note=> note.id !== id)
+    const docRef = doc(db, "notes", id)
+    await deleteDoc(docRef)
+    setCurrentID(notesArr[0]?.id || [])
+    // setNotesArr(filteredNotes) 
   }
 
   return (
